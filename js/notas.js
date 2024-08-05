@@ -5,7 +5,7 @@ let notas = [
 ];
 let idGlobal = 2;
 
-// Función para pintar las notas en el contenedor
+
 const pintarNotas = () => {
     const contenedorNotas = document.getElementById('contenedorNotas');
     contenedorNotas.innerHTML = '';
