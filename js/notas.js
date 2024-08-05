@@ -1,4 +1,3 @@
-// Inicializar array de notas y variable idGlobal
 let notas = [
     { id: 1, titulo: "Nota 1", texto: "Texto de la nota 1", realizada: false },
     { id: 2, titulo: "Nota 2", texto: "Texto de la nota 2", realizada: true }
@@ -6,8 +5,8 @@ let notas = [
 let idGlobal = 2;
 
 
-const pintarNotas = () => {
-    const contenedorNotas = document.getElementById('contenedorNotas');
+let pintarNotas = () => {
+    let contenedorNotas = document.getElementById('contenedorNotas');
     contenedorNotas.innerHTML = '';
 
     if (notas.length === 0) {
@@ -15,12 +14,12 @@ const pintarNotas = () => {
         return;
     }
 
-    const filtroTexto = document.getElementById('filterText').value.toLowerCase();
-    const filtroRealizadas = document.getElementById('filterCompleted').checked;
+    let filtroTexto = document.getElementById('filterText').value.toLowerCase();
+    let filtroRealizadas = document.getElementById('filterCompleted').checked;
 
-    const notasFiltradas = notas.filter(nota => {
-        const matchTexto = nota.titulo.toLowerCase().includes(filtroTexto) || nota.texto.toLowerCase().includes(filtroTexto);
-        const matchRealizadas = !filtroRealizadas || nota.realizada;
+    let notasFiltradas = notas.filter(nota => {
+        let matchTexto = nota.titulo.toLowerCase().includes(filtroTexto) || nota.texto.toLowerCase().includes(filtroTexto);
+        let matchRealizadas = !filtroRealizadas || nota.realizada;
         return matchTexto && matchRealizadas;
     });
 
@@ -30,16 +29,19 @@ const pintarNotas = () => {
     }
 
     notasFiltradas.forEach(nota => {
-        const tarjeta = document.createElement('div');
-        tarjeta.classList.add('card', 'mb-3');
-        tarjeta.innerHTML = `
-            <div class="card-body">
-                <h5 class="card-title">${nota.titulo}</h5>
-                <p class="card-text">${nota.texto}</p>
-                <button class="btn btn-danger" onclick="borrarNota(${nota.id})">Borrar Nota</button>
-                <div class="form-check mt-2">
-                    <input type="checkbox" class="form-check-input" onclick="marcarRealizada(${nota.id})" ${nota.realizada ? "checked" : ""}>
-                    <label class="form-check-label">Realizada</label>
+        let tarjeta = document.createElement('div');
+        tarjeta.classList.add('card', 'mb-3', 'col-5', 'col-sm-3', 'col-md-2', 'mx-2', 'd-inline-block');
+        tarjeta.innerHTML += `
+            <div class="card bg-warning m-1">
+                <div class="card-header">
+                    <input id="${nota.id}" onclick="marcarRealizada(${nota.id})" type="checkbox" ${nota.realizada ? 'checked' : ''} />
+                    <label for="${nota.id}">
+                        <h5>${nota.titulo}</h5>
+                    </label>
+                </div>
+                <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                    <p  class="card-text ${nota.realizada ? 'rayado' : ''}">${nota.texto}</p>
+                    <button id="borrar" type="button" class="btn btn-danger" onclick="borrarNota(${nota.id})">Borrar Nota</button>
                 </div>
             </div>
         `;
@@ -47,25 +49,29 @@ const pintarNotas = () => {
     });
 };
 
-const agregarNota = (titulo, texto) => {
+
+let agregarNota = (titulo, texto) => {
     idGlobal++;
     notas.push({ id: idGlobal, titulo, texto, realizada: false });
+    pintarNotas();
 };
 
-const borrarNota = (id) => {
+
+let borrarNota = (id) => {
     notas = notas.filter(nota => nota.id !== id);
     pintarNotas();
 };
 
-const marcarRealizada = (id) => {
-    const nota = notas.find(nota => nota.id === id);
+
+let marcarRealizada = (id) => {
+    let nota = notas.find(nota => nota.id === id);
     nota.realizada = !nota.realizada;
     pintarNotas();
 };
 
 document.getElementById('guardarNotaBtn').addEventListener('click', () => {
-    const titulo = document.getElementById('tituloInput').value;
-    const texto = document.getElementById('textoInput').value;
+    let titulo = document.getElementById('tituloInput').value;
+    let texto = document.getElementById('textoInput').value;
 
     if (titulo.trim() && texto.trim()) {
         agregarNota(titulo, texto);
@@ -75,12 +81,17 @@ document.getElementById('guardarNotaBtn').addEventListener('click', () => {
     }
 });
 
+
 document.getElementById('limpiarCamposBtn').addEventListener('click', () => {
     document.getElementById('tituloInput').value = '';
     document.getElementById('textoInput').value = '';
 });
 
+
+document.getElementById('buscarNotasBtn').addEventListener('click', pintarNotas);
+
 document.getElementById('filterText').addEventListener('input', pintarNotas);
 document.getElementById('filterCompleted').addEventListener('change', pintarNotas);
+
 
 pintarNotas();
