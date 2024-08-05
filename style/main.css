@@ -1,0 +1,6 @@
+.form-group {
+    margin-bottom: 0;
+}
+.form-control-sm {
+    width: 120px; /* Ajusta el ancho del input según tus necesidades */
+}
