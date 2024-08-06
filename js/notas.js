@@ -4,7 +4,6 @@ let notas = [
 ];
 let idGlobal = 2;
 
-
 let pintarNotas = () => {
     let contenedorNotas = document.getElementById('contenedorNotas');
     contenedorNotas.innerHTML = '';
@@ -28,10 +27,10 @@ let pintarNotas = () => {
         return;
     }
 
-    notasFiltradas.forEach(nota => {
+    const tarjetas = notasFiltradas.map(nota => {
         let tarjeta = document.createElement('div');
         tarjeta.classList.add('card', 'mb-3', 'col-5', 'col-sm-3', 'col-md-2', 'mx-2', 'd-inline-block');
-        tarjeta.innerHTML += `
+        tarjeta.innerHTML = `
             <div class="card bg-warning m-1">
                 <div class="card-header">
                     <input id="${nota.id}" onclick="marcarRealizada(${nota.id})" type="checkbox" ${nota.realizada ? 'checked' : ''} />
@@ -40,15 +39,16 @@ let pintarNotas = () => {
                     </label>
                 </div>
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
-                    <p  class="card-text ${nota.realizada ? 'text-decoration-line-through' : ''}">${nota.texto}</p>
+                    <p class="card-text ${nota.realizada ? 'text-decoration-line-through' : ''}">${nota.texto}</p>
                     <button id="borrar" type="button" class="btn btn-danger" onclick="borrarNota(${nota.id})">Borrar Nota</button>
                 </div>
             </div>
         `;
-        contenedorNotas.appendChild(tarjeta);
+        return tarjeta;
     });
-};
 
+    contenedorNotas.append(...tarjetas);
+};
 
 let agregarNota = (titulo, texto) => {
     idGlobal++;
@@ -56,12 +56,10 @@ let agregarNota = (titulo, texto) => {
     pintarNotas();
 };
 
-
 let borrarNota = (id) => {
     notas = notas.filter(nota => nota.id !== id);
     pintarNotas();
 };
-
 
 let marcarRealizada = (id) => {
     let nota = notas.find(nota => nota.id === id);
@@ -81,17 +79,14 @@ document.getElementById('guardarNotaBtn').addEventListener('click', () => {
     }
 });
 
-
 document.getElementById('limpiarCamposBtn').addEventListener('click', () => {
     document.getElementById('tituloInput').value = '';
     document.getElementById('textoInput').value = '';
 });
 
-
 document.getElementById('buscarNotasBtn').addEventListener('click', pintarNotas);
 
 document.getElementById('filterText').addEventListener('input', pintarNotas);
 document.getElementById('filterCompleted').addEventListener('change', pintarNotas);
-
 
 pintarNotas();
