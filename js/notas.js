@@ -40,7 +40,7 @@ let pintarNotas = () => {
                     </label>
                 </div>
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
-                    <p  class="card-text ${nota.realizada ? 'rayado' : ''}">${nota.texto}</p>
+                    <p  class="card-text ${nota.realizada ? 'text-decoration-line-through' : ''}">${nota.texto}</p>
                     <button id="borrar" type="button" class="btn btn-danger" onclick="borrarNota(${nota.id})">Borrar Nota</button>
                 </div>
             </div>
